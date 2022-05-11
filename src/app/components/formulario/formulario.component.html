@@ -1,0 +1,165 @@
+<mat-grid-list cols="2">
+  <mat-grid-tile>
+    <form class="form" [formGroup]="agenda" (ngSubmit)="onSubmit()">
+      <table class="full-width" cellspacing="0">
+        <tr>
+          <td>
+            <mat-form-field class="full-width" appearance="fill">
+              <mat-label>Nombre</mat-label>
+              <input matInput id="name" formControlName="name" name="name" />
+              <mat-hint>Min. 3 caracteres.</mat-hint>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width" appearance="fill">
+              <mat-label>Apellidos</mat-label>
+              <input
+                matInput
+                id="surname"
+                formControlName="surname"
+                name="surname"
+              />
+              <mat-hint>Min. 3 caracteres.</mat-hint>
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+      <table class="full-width" cellspacing="0">
+        <tr>
+          <td>
+            <mat-form-field class="full-width" appearance="fill">
+              <mat-label>Edad</mat-label>
+              <input
+                type="number"
+                matInput
+                id="age"
+                formControlName="age"
+                name="age"
+              />
+              <mat-hint>Max 125 años</mat-hint>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width" appearance="fill">
+              <mat-label>DNI</mat-label>
+              <input
+                matInput
+                id="id"
+                formControlName="id"
+                name="id"
+                pattern="^[0-9]{8,8}[A-Za-z]$"
+              />
+              <mat-hint>NIF (8 números y 1 letra)</mat-hint>
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+      <table class="full-width" cellspacing="0">
+        <tr>
+          <td>
+            <mat-form-field class="full-width" appearance="fill">
+              <mat-label>Color Favorito</mat-label>
+              <input matInput id="color" formControlName="color" name="color" />
+              <mat-hint>Min. 3 caracteres.</mat-hint>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="fill">
+              <mat-label>Sexo</mat-label>
+              <mat-select
+                disableRipple
+                formControlName="gender"
+                id="gender"
+                name="name"
+              >
+                <mat-option value="Hombre">Hombre</mat-option>
+                <mat-option value="Mujer">Mujer</mat-option>
+                <mat-option value="Otro">Otro</mat-option>
+                <mat-option value="NS/NC">No Especificado</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+      <table class="full-width" cellspacing="0">
+        <tr>
+          <td>
+            <mat-form-field appearance="fill">
+              <mat-label>Cumpleaños</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="birthday"
+                id="birthday"
+                name="birthday"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </td>
+          <td></td>
+        </tr>
+      </table>
+      <button mat-fab color="primary" aria-label="Enviar" type="submit">
+        <mat-icon>send</mat-icon>
+      </button>
+    </form>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-list>
+      <div mat-subheader>Usuarios</div>
+      <mat-list-item *ngFor="let p of array">
+        <mat-icon mat-list-icon>contacts</mat-icon>
+        <div>
+          <span>{{ p == arrayCheck ? agenda.value.name : p.name }}</span>&nbsp;&nbsp;
+          <span>{{ p == arrayCheck ? agenda.value.surname : p.surname }}</span>&nbsp;
+          <span>Edad: {{ p == arrayCheck ? agenda.value.age : p.age }}</span>&nbsp;
+          <span>DNI: {{ p == arrayCheck ? agenda.value.id : p.id }}</span><br />
+          <span>cumpleaños:
+            {{
+              p == arrayCheck
+                ? agenda.value.birthday.toLocaleString([], {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit"
+                  })
+                : p.birthday.toLocaleString([], {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit"
+                  })
+            }} </span><br />
+          <span>Color Favorito:
+            {{ p == arrayCheck ? agenda.value.color : p.color }} </span>&nbsp;
+          <span>Genero: {{ p == arrayCheck ? agenda.value.gender : p.gender }}
+          </span>
+        </div>
+
+        &nbsp;
+
+        <div>
+          <button
+            mat-raised-button
+            color="basic"
+            (click)="
+              p == arrayCheck
+                ? terminarModificacion($event, p)
+                : modificar($event, p)
+            "
+          >
+            {{ p == arrayCheck ? "Hecho" : "Modificar" }}
+          </button>
+          &nbsp;&nbsp;
+          <button mat-mini-fab color="warn" aria-label="Borrar" (click)="eliminar($event, p)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </mat-grid-tile>
+</mat-grid-list>
